@@ -643,6 +643,12 @@ class Process:
         self.ql.mem.write(addr, bytes(user_shared_data_obj))
 
     def init_kprcb(self):
+        '''
+        KPCRB initialization function.
+
+        @NOTE: Implementation follows KI_USER_SHARED_DATA.
+        '''
+        
         addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KPCRB')
 
         kprcb_obj = KPRCB64()
@@ -652,6 +658,12 @@ class Process:
         self.ql.mem.write(addr, bytes(kprcb_obj))
 
     def init_kpcr(self):
+        '''
+        KPCR initialization function.
+
+        @NOTE: Implementation follows KPCRB64
+        '''
+        
         addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KPCR')
 
         kpcr_obj = KPCR64()
