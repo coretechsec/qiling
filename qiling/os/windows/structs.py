@@ -996,6 +996,33 @@ def make_eprocess(archbits: int):
 
     return obj
 
+def make_kprocess(archbits: int):
+    '''
+    @BRIEF: KPROCESS initialization function. Implemented by @NotJosh
+
+    @NOTE: Implementation follows EPROCESS as it is a subset of the EPROCESS structure.
+    @SOURCE: https://www.geoffchappell.com/studies/windows/km/ntoskrnl/inc/ntos/ke/kprocess/index.htm
+    '''
+    Struct = __make_struct(archbits)
+
+    class KPROCESS(Struct):
+        _fields_ = (
+            ('dummy', ctypes.c_uint8),  # @TODO: fill in more fields.
+        )
+
+    # These structure sizes used are for version 6.1 (Vista). I suspect that these
+    # values will need to be adjusted for a more modern emulation platform once we define
+    # more of the KPROCESS structure.
+    obj_size = {
+        32: 0x98,
+        64: 0x160
+    }[archbits]
+
+    obj = KPROCESS()
+    ctypes.resize(obj, obj_size)
+
+    return obj
+
 
 def make_ldr_data(archbits: int):
     native_type = __select_native_type(archbits)

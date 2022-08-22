@@ -615,6 +615,23 @@ class Process:
 
         self.structure_last_addr = nobj_addr
         self.eprocess_address = eproc_addr
+    
+    def init_kprocess(self):
+        '''
+        @BRIEF: KPROCESS initialization function. Implemented by @NotJosh
+
+        @NOTE: Implementation follows EPROCESS as it is a subset of the EPROCESS structure.
+        '''
+
+        kproc_obj = make_kprocess(self.ql.arch.bits)
+
+        kproc_addr = self.structure_last_addr
+        nobj_addr = self.ql.mem.align_up(kproc_addr + ctypes.sizeof(kproc_obj), 0x10)
+
+        self.ql.mem.write(kproc_addr, bytes(kproc_obj))
+
+        self.structure_last_addr = nobj_addr
+        self.kprocess_address = kproc_addr
 
     def init_ki_user_shared_data(self):
         addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KI_USER_SHARED_DATA')
@@ -730,6 +747,8 @@ class QlLoaderPE(QlLoader, Process):
                 self.init_registry_path()
                 self.init_eprocess()
                 self.init_ki_user_shared_data()
+
+                self.init_kprocess()    # @NOTE: Implemented by @NotJosh.
 
                 # set IRQ Level in CR8 to PASSIVE_LEVEL
                 self.ql.arch.regs.write(UC_X86_REG_CR8, 0)
