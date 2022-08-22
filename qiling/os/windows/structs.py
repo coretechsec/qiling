@@ -814,9 +814,9 @@ class KPRCB64(ctypes.Structure):
         ('ReservedMustBeZero',  ctypes.c_char),     # 6.1 and higher (Implemented because our EPROCESS follows 6.1)
         ('InterruptRequest',    ctypes.c_bool),
         ('IdleHalt',            ctypes.c_bool),
-        ('CurrentThread',       ctypes.c_void_p)    # This is meant to be a KTHREAD pointer
-        ('NextThread',          ctypes.c_void_p)    # This is meant to be a KTHREAD pointer
-        ('IdleThread',          ctypes.c_void_p)    # This is meant to be a KTHREAD pointer
+        ('CurrentThread',       ctypes.c_void_p),   # This is meant to be a KTHREAD pointer
+        ('NextThread',          ctypes.c_void_p),   # This is meant to be a KTHREAD pointer
+        ('IdleThread',          ctypes.c_void_p),   # This is meant to be a KTHREAD pointer
     )
 
 
