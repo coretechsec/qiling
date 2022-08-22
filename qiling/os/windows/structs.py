@@ -6,6 +6,7 @@
 import ctypes
 
 from enum import IntEnum
+from re import M
 
 from qiling import Qiling
 from qiling.os.windows.handle import Handle
@@ -794,6 +795,30 @@ def make_mdl(archbits: int):
 #         ('OtherTransferCount', ctypes.c_int64),
 #         ('ThreadCounters', POINTER64),
 #         ('XStateSave', POINTER64))
+
+
+class KPRCB64(ctypes.Structure):
+    '''
+    Definition for 64-bit KPRCB structure.
+
+    Follows implementation of KUSER_SHARED_DATA. Initialisation function in `pe.py` registers this structure.
+    Structure has a configuration item in the `Windows.ql` file.
+
+    @NOTE: structure only implements architectually defined fields, i.e, stable fields. Please read below.
+    https://www.geoffchappell.com/studies/windows/km/ntoskrnl/inc/ntos/amd64_x/kprcb/index.htm
+    '''
+
+    _fields_ = (
+        ('MxCsr',               ctypes.c_ulong),
+        ('LegacyNumber',        ctypes.c_char),     # 6.1 and higher (Implemented because our EPROCESS follows 6.1)
+        ('ReservedMustBeZero',  ctypes.c_char),     # 6.1 and higher (Implemented because our EPROCESS follows 6.1)
+        ('InterruptRequest',    ctypes.c_bool),
+        ('IdleHalt',            ctypes.c_bool),
+        ('CurrentThread',       ctypes.c_void_p)    # This is meant to be a KTHREAD pointer
+        ('NextThread',          ctypes.c_void_p)    # This is meant to be a KTHREAD pointer
+        ('IdleThread',          ctypes.c_void_p)    # This is meant to be a KTHREAD pointer
+    )
+
 
 
 # struct _RTL_PROCESS_MODULE_INFORMATION {

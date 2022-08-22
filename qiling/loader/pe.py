@@ -642,6 +642,16 @@ class Process:
         self.ql.mem.map(addr, self.ql.mem.align_up(user_shared_data_size))
         self.ql.mem.write(addr, bytes(user_shared_data_obj))
 
+    def init_kprcb(self):
+        addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KPRCB')
+
+        kprcb_obj = KPRCB64()
+        kprcb_size = ctypes.sizeof(KPRCB64)
+
+        self.ql.mem.map(addr, self.ql.mem.align_up(kprcb_size))
+        self.ql.mem.write(addr, bytes(kprcb_obj))
+
+
     def init_security_cookie(self, pe: pefile.PE, image_base: int):
         if not Process.directory_exists(pe, 'IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG'):
             return
