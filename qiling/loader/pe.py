@@ -643,7 +643,7 @@ class Process:
         self.ql.mem.write(addr, bytes(user_shared_data_obj))
 
     def init_kprcb(self):
-        addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KPRCB')
+        addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KPCRB')
 
         kprcb_obj = KPRCB64()
         kprcb_size = ctypes.sizeof(KPRCB64)
@@ -651,6 +651,14 @@ class Process:
         self.ql.mem.map(addr, self.ql.mem.align_up(kprcb_size))
         self.ql.mem.write(addr, bytes(kprcb_obj))
 
+    def init_kpcr(self):
+        addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KPCR')
+
+        kpcr_obj = KPCR64()
+        kpcr_size = ctypes.sizeof(KPCR64)
+
+        self.ql.mem.map(addr, self.ql.mem.align_up(kpcr_size))
+        self.ql.mem.write(addr, bytes(kpcr_obj))
 
     def init_security_cookie(self, pe: pefile.PE, image_base: int):
         if not Process.directory_exists(pe, 'IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG'):
@@ -759,6 +767,8 @@ class QlLoaderPE(QlLoader, Process):
                 self.init_ki_user_shared_data()
 
                 self.init_kprocess()    # @NOTE: Implemented by @NotJosh.
+                self.init_kprcb()       # @NOTE: Implemented by @NotJosh.
+                self.init_kpcr()        # @NOTE: Implemented by @NotJosh.
 
                 # set IRQ Level in CR8 to PASSIVE_LEVEL
                 self.ql.arch.regs.write(UC_X86_REG_CR8, 0)

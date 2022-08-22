@@ -816,9 +816,37 @@ class KPRCB64(ctypes.Structure):
         ('IdleHalt',            ctypes.c_bool),
         ('CurrentThread',       ctypes.c_void_p),   # This is meant to be a KTHREAD pointer
         ('NextThread',          ctypes.c_void_p),   # This is meant to be a KTHREAD pointer
-        ('IdleThread',          ctypes.c_void_p),   # This is meant to be a KTHREAD pointer
-    )
+        ('IdleThread',          ctypes.c_void_p))   # This is meant to be a KTHREAD pointer
 
+class KPCR64(ctypes.Structure):
+    '''
+    Defintion for 64-bit KPCR structure.
+
+    Follows implementation of KPRCB64. Initialisation function in `pe.py` registers this structure.
+    Structure has a configuration item in `Windows.ql`.
+    '''
+
+    _fields_ = (
+        ('NtTib',                           ctypes.c_void_p),       # This is meant to be a NT_TIB structure
+        ('IdtBase',                         ctypes.c_void_p),       # This is meant to be a KIDTENTRY64 pointer
+        ('Unused',                          ctypes.c_ulong),        # [0x2]
+        ('Irql',                            ctypes.c_void_p),       # This is meant to be a KIRQL structure
+        ('SecondLevelCacheAssociativity',   ctypes.c_char),
+        ('ObsoleteNumber',                  ctypes.c_char),
+        ('Fill0',                           ctypes.c_char),
+        ('Unused0',                         ctypes.c_ulong),        # [0x3]
+        ('MajorVersion',                    ctypes.c_ushort),
+        ('MinorVersion',                    ctypes.c_ushort),
+        ('StallScaleFactor',                ctypes.c_ulong),
+        ('Unused1',                         ctypes.c_void_p),       # [0x3]
+        ('KernelReserved',                  ctypes.c_ulong),        # [0x0F]
+        ('SecondLevelCacheSize',            ctypes.c_ulong),
+        ('HalReserved',                     ctypes.c_ulong),        # [0x10]
+        ('Unused2',                         ctypes.c_ulong),
+        ('KdVersionBlock',                  ctypes.c_void_p),
+        ('Unused3',                         ctypes.c_void_p),
+        ('PcrAlign1',                       ctypes.c_ulong),        # [0x18]
+        ('Prcb',                            KPRCB64))
 
 
 # struct _RTL_PROCESS_MODULE_INFORMATION {

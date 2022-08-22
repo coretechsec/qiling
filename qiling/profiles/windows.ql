@@ -8,6 +8,7 @@ dll_address = 0x7ffff0000000
 entry_point = 0x140000000
 KI_USER_SHARED_DATA = 0xfffff78000000000
 KPCRB = 0xfffff77000000000
+KPCR = 0xfffff76000000000
 
 [OS32]
 heap_address = 0x5000000
