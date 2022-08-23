@@ -181,6 +181,8 @@ class Process:
                 self.ql.log.debug(f'DLL preferred base address is taken, loading to: {image_base:#x}')
 
                 # Checks whether dll is a .sys file, if it is a .sys file then it maps it into kernel land
+                # @TODO: bug fix where cng.sys does not trigger this conditional...
+                # @TODO: add configuration item in windows.ql for kernel address space for more generic solution
                 if ".sys" in dll_name:
                     self.ql.log.warning(f"Driver: {dll_name} found, mapping to kernel!")
                     image_base = 0xfffff74000000000 + image_base
