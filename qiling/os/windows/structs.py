@@ -817,7 +817,7 @@ class KTHREAD64(ctypes.Structure):
         ('WaitRegister',        ctypes.c_uint8),
         ('Running',             ctypes.c_uint8),
         ('Alerted',             ctypes.c_uint8),
-        ('MiscFlags',           ctypes.c_uint32)
+        ('MiscFlags',           ctypes.c_uint32),
         ('ApcState',            ctypes.c_void_p),   # Supposed to be KAPC_STATE64
         ('DeferredProcessor',   ctypes.c_uint32),
         ('ApcQueueLock',        ctypes.c_uint64),
@@ -848,7 +848,7 @@ class KTHREAD64(ctypes.Structure):
         ('Process',             ctypes.c_void_p),   # Supposed to be POINTER64
         ('Affinity',            ctypes.c_void_p),   # Supposed to be GROUP_AFFINITY64
         ('IdealProcessor',      ctypes.c_uint32),
-        ('UserIdealProcessor',  ctypes.c_uint32)
+        ('UserIdealProcessor',  ctypes.c_uint32),
         ('ApcStatePointer',     ctypes.c_void_p),   # Supposed to be POINTER 64 * 2
         ('SavedApcState',       ctypes.c_void_p),   # Supposed to be KAPC_STATE64
         ('Win32Thread',         ctypes.c_void_p),   # Supposed to be POINTER64
