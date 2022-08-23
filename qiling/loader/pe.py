@@ -179,6 +179,17 @@ class Process:
             if not self.ql.mem.is_available(image_base, image_size):
                 image_base = self.ql.mem.find_free_space(image_size, minaddr=image_base, align=0x10000)
                 self.ql.log.debug(f'DLL preferred base address is taken, loading to: {image_base:#x}')
+
+                # Checks whether dll is a .sys file, if it is a .sys file then it maps it into kernel land
+                if ".sys" in dll_name:
+                    self.ql.log.warning(f"Driver: {dll_name} found, mapping to kernel!")
+                    image_base = 0xfffff74000000000 + image_base
+                
+                # Checks if dll is ntoskrnl.exe, if it is then it maps it into kernel land
+                if "ntoskrnl.exe" in dll_name:
+                    self.ql.log.warning(f"ntoskrnl found {dll_name}, mapping to kernel!")
+                    image_base = 0xfffff74000000000 + image_base
+
                 relocate = True
 
             if relocate:
