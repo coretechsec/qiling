@@ -796,6 +796,7 @@ class QlLoaderPE(QlLoader, Process):
                 self.init_kprocess()    # @NOTE: Implemented by @NotJosh.
                 self.init_kprcb()       # @NOTE: Implemented by @NotJosh.
                 self.init_kpcr()        # @NOTE: Implemented by @NotJosh.
+                self.init_kthread()     # @NOTE: Implemented by @NotJosh.
 
                 # set IRQ Level in CR8 to PASSIVE_LEVEL
                 self.ql.arch.regs.write(UC_X86_REG_CR8, 0)
