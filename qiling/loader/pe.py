@@ -642,6 +642,21 @@ class Process:
         self.ql.mem.map(addr, self.ql.mem.align_up(user_shared_data_size))
         self.ql.mem.write(addr, bytes(user_shared_data_obj))
 
+    def init_kthread(self):
+        '''
+        KTHREAD intiialziation function
+
+        @NOTE: implementation follows KI_USER_SHARED_DATA
+        '''
+
+        addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KTHREAD')
+
+        kthread_obj = KTHREAD64()
+        kthread_size = ctypes.sizeof(KTHREAD64)
+
+        self.ql.mem.map(addr, self.ql.mem.align_up(kthread_size))
+        self.ql.mem.write(addr, bytes(kthread_obj))
+
     def init_kprcb(self):
         '''
         KPCRB initialization function.
