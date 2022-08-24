@@ -670,7 +670,7 @@ class Process:
         self.ql.mem.map(addr, self.ql.mem.align_up(kthread_size))
         self.ql.mem.write(addr, bytes(kthread_obj))
 
-    def init_kprcb(self):
+    def init_kpcrb(self):
         '''
         KPCRB initialization function.
 
@@ -699,6 +699,21 @@ class Process:
 
         self.ql.mem.map(addr, self.ql.mem.align_up(kpcr_size))
         self.ql.mem.write(addr, bytes(kpcr_obj))
+    
+    def init_kapc_state(self):
+        '''
+        KAPC_STATE initialization function.
+
+        @NOTE: Implementation follows KPCR
+        '''
+
+        addr = self.ql.os.profile.getint(f'OS{self.ql.arch.bits}', 'KAPC_STATE')
+
+        kapc_state_obj = KAPC_STATE64()
+        kapc_state_size = ctypes.sizeof(KAPC_STATE64)
+
+        self.ql.mem.map(addr, self.ql.mem.align_up(kapc_state_size))
+        self.ql.mem.write(addr, bytes(kapc_state_obj))
 
     def init_security_cookie(self, pe: pefile.PE, image_base: int):
         if not Process.directory_exists(pe, 'IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG'):
@@ -807,7 +822,7 @@ class QlLoaderPE(QlLoader, Process):
                 self.init_ki_user_shared_data()
 
                 self.init_kprocess()    # @NOTE: Implemented by @NotJosh.
-                self.init_kprcb()       # @NOTE: Implemented by @NotJosh.
+                self.init_kpcrb()       # @NOTE: Implemented by @NotJosh.
                 self.init_kpcr()        # @NOTE: Implemented by @NotJosh.
                 self.init_kthread()     # @NOTE: Implemented by @NotJosh.
 

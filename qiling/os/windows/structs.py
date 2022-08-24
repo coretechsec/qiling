@@ -613,8 +613,20 @@ def make_mdl(archbits: int):
 #         ('KernelApcPending', ctypes.c_uint8),
 #         ('UserApcPending', ctypes.c_uint8),
 #     )
-#
-#
+
+class KAPC_STATE64(ctypes.Structure):
+    '''
+    Implementation for KAPC_STATE64 structure
+    '''
+
+    _fields_ = (
+        ('ApcListHead',         ctypes.c_void_p), # Supposed to be LIST_ENTRY64 * 2
+        ('Process',             ctypes.c_void_p), # Supposed to be POINTER64
+        ('KernelApcInProgress', ctypes.c_uint8),
+        ('KernelApcPending',    ctypes.c_uint8),
+        ('UserApcPending',      ctypes.c_uint8)
+    )
+
 # class KAPC_STATE32(ctypes.Structure):
 #     _fields_ = (
 #         ('ApcListHead', LIST_ENTRY32 * 2),
