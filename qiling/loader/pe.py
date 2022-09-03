@@ -669,11 +669,9 @@ class Process:
         # Writes KPCR pointer into GS:[0x18]
         self.ql.mem.write_ptr(0x6000018, kpcr_addr)
         
-        # @NOTE: Tests for writing structure pointers.
-        # Please don't remove.
-        self.ql.log.warn(f"KPCR CurrentPrcb: {kpcr_obj.CurrentPrcb:x}")
-        self.ql.log.warn(f"KPCR Self: {kpcr_obj.Self:x}")
-        self.ql.log.warn(f"KPCR Prcb: {kpcr_obj.Prcb:x}")
+        self.ql.log.debug(f"KPCR CurrentPrcb: {kpcr_obj.CurrentPrcb:x}")
+        self.ql.log.debug(f"KPCR Self: {kpcr_obj.Self:x}")
+        self.ql.log.debug(f"KPCR Prcb: {kpcr_obj.Prcb:x}")
 
         self.ql.os.KPCR = kpcr_obj
 
@@ -740,7 +738,7 @@ class Process:
         kthread_addr = osconf.getint('KTHREAD')
         knode_addr   = osconf.getint('KNODE')
 
-        # Initialize and instance with a few key fields
+        # Initialize structure and few key fields
         kprcb_obj = kprcb_struct.volatile_ref(self.ql.mem, kprcb_addr)
         kprcb_obj.CurrentThread = kthread_addr      # Writes _KTHREAD pointer to CurrentThread field
         kprcb_obj.IdleThread = kthread_addr         # Writes _KTHREAD pointer to IdleThread field
@@ -749,11 +747,9 @@ class Process:
         # Writes KPRCB pointer into GS:[0x20]
         self.ql.mem.write_ptr(0x6000020, kprcb_addr)
 
-        # @NOTE: Tests for writing structure pointers.
-        # please don't remove.
-        self.ql.log.warn(f"KPRCB IdleThread: {kprcb_obj.IdleThread:x}")
-        self.ql.log.warn(f"KPRCB CurrentThread: {kprcb_obj.CurrentThread:x}")
-        self.ql.log.warn(f"KPRCB ParentNode: {kprcb_obj.ParentNode:x}")
+        self.ql.log.debug(f"KPRCB IdleThread: {kprcb_obj.IdleThread:x}")
+        self.ql.log.debug(f"KPRCB CurrentThread: {kprcb_obj.CurrentThread:x}")
+        self.ql.log.debug(f"KPRCB ParentNode: {kprcb_obj.ParentNode:x}")
 
         self.ql.os.KPRCB = kprcb_obj
 

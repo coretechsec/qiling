@@ -795,16 +795,16 @@ class KPCR(struct.BaseStruct):
 
     _fields_ = (
         ('NtTib',                           NT_TIB),
-        ('GdtBase',                         ctypes.c_void_p),       # _KGDTENTRY64
-        ('TssBase',                         ctypes.c_void_p),       # _KTSS64
+        ('GdtBase',                         pointer_type),          # _KGDTENTRY64
+        ('TssBase',                         pointer_type),          # _KTSS64
         ('UserRsp',                         ctypes.c_uint8),
         ('Self',                            pointer_type),          # _KPCR
         ('CurrentPrcb',                     pointer_type),          # _KPRCB
         ('LockArray',                       ctypes.c_void_p),       # _KSPIN_LOCK_QUEUE
         ('UsedSelf',                        ctypes.c_void_p),       
-        ('IdtBase',                         ctypes.c_void_p),       # This is meant to be a KIDTENTRY64 pointer
+        ('IdtBase',                         pointer_type),          # _KIDTENTRY64 pointer
         ('Unused',                          ctypes.c_ulong),        # [0x2]
-        ('Irql',                            ctypes.c_void_p),       # This is meant to be a KIRQL structure
+        ('Irql',                            pointer_type),          # _KIRQL structure
         ('SecondLevelCacheAssociativity',   ctypes.c_char),
         ('ObsoleteNumber',                  ctypes.c_char),
         ('Fill0',                           ctypes.c_char),
@@ -875,18 +875,23 @@ class KPROCESS(struct.BaseStruct):
         +0x2c8 InstrumentationCallback : Ptr64 Void
         +0x2d0 SecureState      : <unnamed-tag>
     '''
+
+    # Get 64-bit native_type
+    native_type = struct.get_native_type(64)
+    pointer_type = native_type
+
     _fields_ = (
-        ('Header',              ctypes.c_void_p),
-        ('ProfileListHead',     ctypes.c_void_p),
+        ('Header',              pointer_type),      # _DISPATCHER_HEADER
+        ('ProfileListHead',     pointer_type),      # _LIST_ENTRY
         ('DirectoryTableBase',  ctypes.c_uint8),
-        ('ThreadListHead',      ctypes.c_void_p),
+        ('ThreadListHead',      pointer_type),      # _LIST_ENTRY
         ('ProcessLock',         ctypes.c_uint),
         ('ProcessTimerDelay',   ctypes.c_uint),
         ('DeepFreezeStartTime', ctypes.c_uint8),
-        ('Affinity',            ctypes.c_void_p),
-        ('ReadyListHead',       ctypes.c_void_p),
-        ('SwapListEntry',       ctypes.c_void_p),
-        ('ActiveProcessors',    ctypes.c_void_p),
+        ('Affinity',            pointer_type),      # _KAFFINITY_EX
+        ('ReadyListHead',       pointer_type),      # _LIST_ENTRY
+        ('SwapListEntry',       pointer_type),      # _SINGLE_LIST_ENTRY
+        ('ActiveProcessors',    pointer_type),      # _KAFFINITY_EX
         ('AutoAlignment',       ctypes.c_int, 1),
         ('DisableBoost',        ctypes.c_int, 1),
         ('DisableQuantum',      ctypes.c_int, 1),
@@ -902,16 +907,16 @@ class KPROCESS(struct.BaseStruct):
         ('BasePriority',        ctypes.c_char),
         ('QuantumReset',        ctypes.c_char),
         ('Visited',             ctypes.c_char),
-        ('Flags',               ctypes.c_void_p),
+        ('Flags',               pointer_type),      # _KEXECUTE_OPTIONS
         ('ThreadSeed',          ctypes.c_uint * 20),
         ('IdealNode',           ctypes.c_uint * 20),
         ('IdealGlobalNode',     ctypes.c_uint),
         ('Spare1',              ctypes.c_uint),
-        ('StackCount',          ctypes.c_void_p),
-        ('ProcessListEntry',    ctypes.c_void_p),
+        ('StackCount',          pointer_type),      # _KSTACK_COUNT
+        ('ProcessListEntry',    pointer_type),      # _LIST_ENTRY
         ('CycleTime',           ctypes.c_uint8),
         ('ContextSwitches',     ctypes.c_uint8),
-        ('SchedulingGroup',     ctypes.c_void_p),
+        ('SchedulingGroup',     pointer_type),      # _KSCHEDULING_GROUP
         ('FreezeCount',         ctypes.c_uint),
         ('KernelTime',          ctypes.c_uint),
         ('UserTime',            ctypes.c_uint),
