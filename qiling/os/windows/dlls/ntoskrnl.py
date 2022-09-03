@@ -371,6 +371,8 @@ def hook_ExAllocatePool(ql: Qiling, address: int, params):
 def hook_ExAllocatePoolWithTag(ql: Qiling, address: int, params):
     size = params['NumberOfBytes']
 
+    print(f"(CORE) {size}")
+
     return ql.os.heap.alloc(size)
 
 # PVOID ExAllocatePoolWithQuotaTag(

@@ -717,39 +717,40 @@ class KPRCB(struct.BaseStruct):
     pointer_type = native_type
 
     _fields_ = (
-        ('MxCsr',                       ctypes.c_ulong),
-        ('Number',                      ctypes.c_ushort),
+        ('MxCsr',                       ctypes.c_uint * 4),
         ('LegacyNumber',                ctypes.c_char),
         ('ReservedMustBeZero',          ctypes.c_char),
-        ('InterruptRequest',            ctypes.c_bool),
-        ('IdleHalt',                    ctypes.c_bool),
+        ('InterruptRequest',            ctypes.c_char),
+        ('IdleHalt',                    ctypes.c_char),
         ('CurrentThread',               pointer_type),          # _KTHREAD
         ('NextThread',                  pointer_type),          # _KTHREAD
         ('IdleThread',                  pointer_type),          # _KTHREAD
         ('NestingLevel',                ctypes.c_char),
         ('ClockOwner',                  ctypes.c_char),
         ('PendingTickFlags',            ctypes.c_char),
-        ('PendingTick',                 ctypes.c_void_p),       # POS 0 : BIT 1
-        ('PendingBackupTick',           ctypes.c_void_p),       # POS 1 : BIT 1
+        ('PendingTick',                 ctypes.c_int, 1),       # POS 0 : BIT 1
+        ('PendingBackupTick',           ctypes.c_int, 1),       # POS 1 : BIT 1
         ('IdleState',                   ctypes.c_char),
-        ('Number',                      ctypes.c_uint),
+        ('Number',                      ctypes.c_uint * 4),
         ('RspBase',                     ctypes.c_uint8),
         ('PrcbLock',                    ctypes.c_uint8),
         ('PriorityState',               ctypes.c_char_p),
         ('CpuType',                     ctypes.c_char),
-        ('CpuStep',                     ctypes.c_uint),
+        ('CpuID',                       ctypes.c_char),
+        ('CpuStep',                     ctypes.c_uint * 2),
         ('CpuStepping',                 ctypes.c_char),
         ('CpuModel',                    ctypes.c_char),
-        ('MHz',                         ctypes.c_uint),
+        ('MHz',                         ctypes.c_uint * 4),
         ('HalReserved',                 ctypes.c_uint8 * 8),
-        ('MinorVersion',                ctypes.c_uint),
-        ('MajorVersion',                ctypes.c_uint),
+        ('MinorVersion',                ctypes.c_uint * 2),
+        ('MajorVersion',                ctypes.c_uint * 2),
         ('BuildType',                   ctypes.c_char),
         ('CpuVendor',                   ctypes.c_char),
         ('CoresPerPhysicalProcessor',   ctypes.c_char),
         ('LogicalProcessorPerCore',     ctypes.c_char),
         ('PrcbPad04',                   ctypes.c_uint8 * 6),
-        ('ParentNode',                  pointer_type),            # _KNODE
+        ('PrcbPad05',                   ctypes.c_int * 8),
+        ('ParentNode',                  pointer_type),              # _KNODE
         ('_padding0',                   ctypes.c_uint8 * 0x7DC0)    # 0x7E80 (request mailbox) - 0xC0 (parent node)
     )
 

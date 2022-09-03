@@ -184,12 +184,17 @@ class QlOsWindows(QlOs):
                 api_name = api_name.decode()
 
             api_func = self.user_defined_api[QL_INTERCEPT.CALL].get(api_name)
+            print(f"(CORE) API: {api_name} with FUNC: {api_func}")
+
 
             if not api_func:
                 api_func = getattr(api, f'hook_{api_name}', None)
 
+                print(f"(CORE) API: {api_func}")
+
             if api_func:
                 try:
+                    print(f"(CORE) Calling: {api_name} at {address:x}")
                     api_func(ql, address, api_name)
                 except Exception as ex:
                     ql.log.exception(ex)

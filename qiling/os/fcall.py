@@ -155,8 +155,12 @@ class QlFunctionCall:
 			if overrides is not None:
 				pc, params = overrides
 
+		print(f"(CORE) RIP: {pc:x} with {params} ")
+
 		# call function
 		retval = func(ql, pc, params)
+
+		print(f"(CORE) RETVAL: {retval}")
 
 		# if set, fire up the on-exit hook and let it override the return value
 		if hook_onexit:
@@ -186,6 +190,8 @@ class QlFunctionCall:
 
 		nslots = self.__count_slots(proto.values())
 		retaddr = -1 if passthru else self.cc.unwind(nslots)
+
+		print(f"(CORE) RETADDR: {retaddr:x}")
 
 		return targs, retval, retaddr
 

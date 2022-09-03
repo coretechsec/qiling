@@ -771,6 +771,7 @@ class Process:
 
         # Initialize struct with a few key fields
         knode_obj = knode_struct.volatile_ref(self.ql.mem, knode_addr)
+        knode_obj.NodeNumber = 10
 
         self.ql.os.KNODE = knode_obj
 
